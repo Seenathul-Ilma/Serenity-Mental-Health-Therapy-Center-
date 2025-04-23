@@ -197,6 +197,7 @@ public class TherapistController implements Initializable {
 
     private String getSelectedDays() {
         return String.join(", ", availableListCombo.getCheckModel().getCheckedItems());
+
     }
 
     @FXML
