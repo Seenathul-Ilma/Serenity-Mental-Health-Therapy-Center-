@@ -1,0 +1,33 @@
+/* styles.css */
+
+/* Base TextField Styling */
+.modern-textfield {
+    -fx-background-color: #f5f5f5;  /* Light gray background */
+    -fx-border-color: #d1d1d1;  /* Subtle border */
+    -fx-border-radius: 8px;  /* Rounded corners */
+    -fx-background-radius: 8px;  /* Match border radius */
+    -fx-padding: 8px;  /* Inner spacing */
+    -fx-font-size: 14px;
+    -fx-text-fill: #333;  /* Dark text */
+    -fx-border-width: 1px;
+    -fx-prompt-text-fill: #888;  /* Light placeholder */
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+/* Hover Effect */
+.modern-textfield:hover {
+    -fx-border-color: #a1a1a1;
+}
+
+/* Focus Effect */
+.modern-textfield:focused {
+    -fx-border-color: #0078ff; /* Blue highlight */
+    -fx-background-color: #ffffff; /* White background */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 120, 255, 0.3), 8, 0, 0, 2);
+}
+
+/* Remove Focus Glow for Clean Look */
+.text-field {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}

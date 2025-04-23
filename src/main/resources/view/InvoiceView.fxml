@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="invoiceAnchorPane" prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse71.serenitytherapycenter.controller.InvoiceController">
+   <children>
+      <StackPane prefHeight="500.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox prefHeight="500.0" prefWidth="400.0" spacing="10.0" style="-fx-background-color: #ffffff;">
+               <children>
+                  <HBox style="-fx-border-color: #AAB99A; -fx-border-width: 0 0 1 0;">
+                     <children>
+                        <HBox style="-fx-border-color: #255F38;">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <children>
+                              <ImageView fitHeight="76.0" fitWidth="262.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../Images/final.png" />
+                                 </image>
+                              </ImageView>
+                              <VBox alignment="CENTER">
+                                 <children>
+                                    <Label alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" prefHeight="18.0" prefWidth="203.0" text="No. 31/5z, Kalutara South" textAlignment="RIGHT">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="18.0" prefWidth="203.0" text="example@gmail.com" textAlignment="RIGHT">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="18.0" prefWidth="203.0" text="+94750513071" textAlignment="RIGHT">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets right="5.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </HBox>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="400.0" text="Receipt For Enrollment">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <VBox>
+                     <children>
+                        <HBox>
+                           <children>
+                              <Label prefHeight="20.0" prefWidth="45.0" text="Date :">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblDate" prefHeight="20.0" prefWidth="90.0" text="2025/04/21">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label prefHeight="20.0" prefWidth="81.0" text="Receipt No :">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblPayId" prefHeight="18.0" prefWidth="92.0" text="PAY001">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label prefHeight="20.0" prefWidth="102.0" text="Payment Type :">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblPayType" prefHeight="20.0" prefWidth="230.0" text="Upfront Only">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox spacing="5.0">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <children>
+                        <Label contentDisplay="CENTER" prefHeight="18.0" prefWidth="400.0" text="Patient Details">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Label>
+                        <GridPane gridLinesVisible="true">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="206.0" text="Patient Name" textAlignment="CENTER" textFill="#9c9898">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="199.0" text="Enrolled Program" textAlignment="CENTER" textFill="#9c9898" GridPane.columnIndex="1">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblPatName" alignment="CENTER" prefHeight="18.0" prefWidth="190.0" text="John Doe" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblEnrollPro" alignment="CENTER" prefHeight="18.0" prefWidth="190.0" text="Cognitive" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </GridPane>
+                     </children>
+                  </VBox>
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label contentDisplay="CENTER" prefHeight="18.0" prefWidth="400.0" text="Payment Details">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Label>
+                        <GridPane gridLinesVisible="true">
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="206.0" text="Description" textAlignment="CENTER" textFill="#9c9898">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="199.0" text="Amount (Rs.)" textAlignment="CENTER" textFill="#9c9898" GridPane.columnIndex="1">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" prefHeight="18.0" prefWidth="190.0" text="Paid" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblPaid" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="190.0" text=" 10000.0" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets right="70.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </GridPane>
+                     </children>
+                  </VBox>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="400.0" text="Thank You !">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="63.0" prefWidth="400.0" text="If you have any questions about this receipt, please contact us.  We are here to support your journey toward healing and well-being." textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
+   </children>
+</AnchorPane>

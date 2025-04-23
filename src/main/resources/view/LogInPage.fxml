@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="logInPage" minHeight="500.0" minWidth="800.0" style="-fx-background-color: #243642;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse71.serenitytherapycenter.controller.LogInPageController">
+   <children>
+      <AnchorPane fx:id="imageAnchorPane" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #255f38;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox fx:id="pageOne2" alignment="CENTER" fillWidth="false" layoutX="197.0" layoutY="41.0" opacity="0.75" prefHeight="530.0" prefWidth="406.0" spacing="5.0" style="-fx-background-color: white; -fx-border-radius: 30; -fx-background-radius: 30; -fx-border-color: #243642;">
+               <children>
+                  <VBox alignment="TOP_CENTER" prefHeight="206.0" prefWidth="296.0" spacing="10.0">
+                     <children>
+                        <ImageView fitHeight="170.0" fitWidth="197.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/logo1.png" />
+                           </image>
+                        </ImageView>
+                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="296.0" text="SIGN IN TO CONTINUE" textFill="#255f38">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Label contentDisplay="CENTER" prefHeight="9.0" prefWidth="242.0" />
+                  <VBox>
+                     <children>
+                        <Label contentDisplay="CENTER" prefHeight="14.0" prefWidth="242.0" text="Username :">
+                           <padding>
+                              <Insets left="5.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="txtUserName" prefHeight="27.0" prefWidth="245.0" promptText="Username" style="-fx-background-color: white; -fx-border-color: #255f38; -fx-border-radius: 10;" />
+                     </children>
+                  </VBox>
+                  <Label contentDisplay="CENTER" prefHeight="6.0" prefWidth="242.0">
+                     <font>
+                        <Font size="5.0" />
+                     </font>
+                  </Label>
+                  <VBox>
+                     <children>
+                        <Label contentDisplay="CENTER" prefHeight="14.0" prefWidth="242.0" text="Password :">
+                           <padding>
+                              <Insets left="5.0" />
+                           </padding>
+                        </Label>
+                        <PasswordField fx:id="txtPassword" prefHeight="14.0" prefWidth="244.0" promptText="Password" style="-fx-background-color: white; -fx-border-color: #255f38; -fx-border-radius: 10;" />
+                     </children>
+                  </VBox>
+                  <HBox alignment="CENTER" prefHeight="19.0" prefWidth="246.0" spacing="10.0">
+                     <children>
+                        <Label />
+                        <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#forgetPasswordOnAction" prefHeight="16.0" prefWidth="235.0" style="-fx-background-color: #fff;" text="Forget Password ?" textAlignment="RIGHT" textFill="#255f38">
+                           <padding>
+                              <Insets top="-10.0" />
+                           </padding>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <VBox>
+                     <children>
+                        <Label contentDisplay="CENTER" prefHeight="14.0" prefWidth="242.0" text="OTP :">
+                           <padding>
+                              <Insets left="5.0" />
+                           </padding>
+                        </Label>
+                        <PasswordField fx:id="txtOTP" disable="true" prefHeight="14.0" prefWidth="244.0" promptText="OTP" style="-fx-background-color: white; -fx-border-color: #255f38; -fx-border-radius: 10;" />
+                     </children>
+                  </VBox>
+                  <Label contentDisplay="CENTER" prefHeight="13.0" prefWidth="242.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER" prefHeight="26.0" prefWidth="243.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="btnLogInOTP" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#logInByOTPOnAction" prefHeight="26.0" prefWidth="136.0" style="-fx-background-radius: 7; -fx-background-color: #255f38;" text="Sign In By OTP" textFill="WHITE" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btnLogIn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#logInOnAction" prefHeight="26.0" prefWidth="129.0" style="-fx-background-radius: 7; -fx-background-color: #255f38;" text="Sign In" textFill="WHITE" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+      <VBox layoutY="56.0" prefHeight="500.0" prefWidth="248.0" style="-fx-background-color: black;" visible="false" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="50.0" />
+      <VBox layoutX="10.0" layoutY="66.0" prefHeight="500.0" prefWidth="248.0" style="-fx-background-color: black;" visible="false" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
+   </children>
+</AnchorPane>

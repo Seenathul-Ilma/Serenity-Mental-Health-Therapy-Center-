@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse71.serenitytherapycenter.controller.ProgramController">
+    <children>
+        <VBox prefHeight="500.0" prefWidth="800.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <HBox prefHeight="158.0" prefWidth="566.0" spacing="20.0">
+                    <children>
+                        <VBox fx:id="insertVBox" alignment="CENTER" prefHeight="205.0" prefWidth="600.0" spacing="7.0" HBox.hgrow="ALWAYS">
+                            <children>
+                        <HBox alignment="TOP_RIGHT" prefHeight="26.0" prefWidth="122.0" spacing="20.0">
+                           <children>
+                              <HBox prefHeight="30.0" prefWidth="554.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <HBox prefHeight="30.0" prefWidth="256.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <TextField fx:id="txtSearch" prefHeight="30.0" prefWidth="175.0" promptText="Search Here..." style="-fx-background-color: #D4E7C5; -fx-border-color: #99BC85; -fx-border-width: 1;" />
+                                          <Button fx:id="btnSearch" graphicTextGap="5.0" mnemonicParsing="false" onAction="#btnSearchOnAction" prefHeight="30.0" prefWidth="102.0" style="-fx-background-color: #D4E7C5; -fx-border-color: #99BC85; -fx-border-width: 2; -fx-border-radius: 7; -fx-background-radius: 7;" text="Search" textFill="#255f38">
+                                             <graphic>
+                                                <ImageView fitHeight="16.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../Images/magnifier.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                              <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="68.0" text="Date : " textFill="#1e3e62">
+                                 <font>
+                                    <Font name="Calibri" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblDate" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="77.0" text="2024/10/10" textFill="#1e3e62">
+                                 <font>
+                                    <Font name="Calibri" size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label fx:id="lblProgramId" maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="642.0" style="-fx-background-color: #D4E7C5; -fx-border-color: #99BC85;" text="Program Id" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="Calibri" size="14.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="4.0" left="10.0" top="4.0" />
+                                 </padding>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefWidth="739.0" spacing="10.0">
+                           <children>
+                              <TextField fx:id="txtProName" prefHeight="27.0" prefWidth="759.0" promptText="Program Name" style="-fx-background-color: #D4E7C5; -fx-border-color: #99BC85; -fx-border-width: 1;" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                           <children>
+                              <TextField fx:id="txtProDesc" prefHeight="27.0" prefWidth="759.0" promptText="Discription" style="-fx-background-color: #D4E7C5; -fx-border-color: #99BC85; -fx-border-width: 1;" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                           <children>
+                              <TextField fx:id="txtDuration" prefHeight="27.0" prefWidth="272.0" promptText="Duration" style="-fx-background-color: #D4E7C5; -fx-border-color: #99BC85; -fx-border-width: 1;" />
+                              <ComboBox fx:id="combDuration" onAction="#combDurationOnAction" prefHeight="27.0" prefWidth="261.0" style="-fx-background-color: #D4E7C5; -fx-border-color: #99BC85; -fx-border-width: 1;" />
+                              <TextField fx:id="txtAmount" prefHeight="27.0" prefWidth="309.0" promptText="Amount" style="-fx-background-color: #D4E7C5; -fx-border-color: #99BC85; -fx-border-width: 1;" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0" />
+                        <HBox alignment="CENTER_LEFT" spacing="10.0" />
+                            </children>
+                            <HBox.margin>
+                                <Insets left="20.0" right="20.0" top="20.0" />
+                            </HBox.margin>
+                        </VBox>
+                    </children>
+                </HBox>
+            <HBox prefHeight="50.0" prefWidth="759.0" spacing="15.0">
+               <children>
+                          <Button fx:id="btnDelete" contentDisplay="TOP" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btnDeleteOnAction" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #D4E7C5; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #99BC85; -fx-border-width: 2;" text="Delete" textFill="#255f38" HBox.hgrow="ALWAYS">
+                              <font>
+                                  <Font name="Calibri Bold" size="14.0" />
+                              </font>
+                              <cursor>
+                                  <Cursor fx:constant="CLOSED_HAND" />
+                              </cursor>
+                     <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/delete.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                          </Button>
+                  <Button fx:id="btnSave" contentDisplay="TOP" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btnSaveOnAction" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #D4E7C5; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #99BC85; -fx-border-width: 2;" text="Save" textFill="#255f38" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font name="Calibri Bold" size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="CLOSED_HAND" />
+                     </cursor>
+                     <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/diskette.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnReset" contentDisplay="TOP" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btnResetOnAction" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #D4E7C5; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #99BC85; -fx-border-width: 2;" text="Reset" textFill="#255f38" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font name="Calibri Bold" size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="CLOSED_HAND" />
+                     </cursor>
+                     <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/eraser.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnUpdate" contentDisplay="TOP" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btnUpdateOnAction" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #D4E7C5; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #99BC85; -fx-border-width: 2;" text="Update" textFill="#255f38" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font name="Calibri Bold" size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="CLOSED_HAND" />
+                     </cursor>
+                     <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/nib.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </VBox.margin>
+            </HBox>
+                <TableView fx:id="tblProgram" onMouseClicked="#onClickTable" prefHeight="174.0" prefWidth="560.0" style="-fx-background-color: #D4E7C5; -fx-border-color: #99BC85; -fx-border-width: 0 2 2 2;" stylesheets="@../Styles/tables.css" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colProId" prefWidth="89.60000455379486" text="Program Id" />
+                  <TableColumn fx:id="colProName" prefWidth="216.00003814697266" text="Program Name" />
+                  <TableColumn fx:id="colDesc" prefWidth="208.0" text="Description" />
+                  <TableColumn fx:id="colDuration" prefWidth="107.19998168945312" text="Duration" />
+                  <TableColumn fx:id="colAmount" prefWidth="121.5999755859375" text="Amount" />
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
+                    <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                    </VBox.margin>
+                </TableView>
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+        </VBox>
+    </children>
+</AnchorPane>

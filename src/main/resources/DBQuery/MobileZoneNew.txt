@@ -1,0 +1,234 @@
+//MobileZone
+
+DROP DATABASE IF EXISTS MoblieZone;
+CREATE DATABASE MobileZone;
+USE MobileZone;
+
+
+CREATE TABLE LogInCredentials (
+    userId VARCHAR(6) PRIMARY KEY,
+    role VARCHAR(20) NOT NULL,
+    userName VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Admin (
+    adminId VARCHAR(6) PRIMARY KEY,
+    userId VARCHAR(6) UNIQUE,
+    name VARCHAR(50) NOT NULL,
+    nic VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    contact VARCHAR(50) NOT NULL,
+    FOREIGN KEY (userId) REFERENCES LogInCredentials(userId) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+
+CREATE TABLE Employee (
+    employeeId VARCHAR(6) PRIMARY KEY,
+    userId VARCHAR(6) UNIQUE,
+    name VARCHAR(100),
+    nic VARCHAR(50) NOT NULL,
+    designation VARCHAR(50),
+    email VARCHAR(100),
+    contact VARCHAR(100),
+    salary VARCHAR(20),
+    compensation VARCHAR(20),
+    totalSalary VARCHAR(25),
+    FOREIGN KEY (userId) REFERENCES LogInCredentials(userId) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+CREATE TABLE Category (
+    categoryId VARCHAR(6) PRIMARY KEY,
+    categoryName VARCHAR(50),
+    subCategory VARCHAR(50),
+    description VARCHAR(50)
+);
+
+
+CREATE TABLE Item (
+    itemId VARCHAR(6) PRIMARY KEY,
+    categoryId VARCHAR(6),
+    name VARCHAR(100),
+    brand VARCHAR(100),
+    model VARCHAR(100),
+    qtyOnHand INT,
+    reOrderLevel INT NOT NULL,
+    unitPrice DECIMAL(10, 2),
+    FOREIGN KEY (categoryId) REFERENCES Category(categoryId) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+CREATE TABLE Supplier (
+    supplierId VARCHAR(6) PRIMARY KEY,
+    companyName VARCHAR(100) NOT NULL,
+    contactPerson VARCHAR(100) NOT NULL,
+    nic VARCHAR(50) NOT NULL,
+    address VARCHAR(255),
+    email VARCHAR(100),
+    phone VARCHAR(50)
+);
+
+
+CREATE TABLE Purchase (
+    purchaseId VARCHAR(6) PRIMARY KEY,
+    supplierId VARCHAR(6),
+    purchaseDate DATE,
+    totalAmount DECIMAL(10, 2),
+    FOREIGN KEY (supplierId) REFERENCES Supplier(supplierId) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+CREATE TABLE PurchaseDetail (
+    purchaseId VARCHAR(6),
+    itemId VARCHAR(6),
+    quantity INT,
+    isReturned VARCHAR(5),
+    unitPrice DECIMAL(10, 2),
+    totalPrice DECIMAL(10, 2),
+    FOREIGN KEY (purchaseId) REFERENCES Purchase(purchaseId) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (itemId) REFERENCES Item(itemId) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+CREATE TABLE PurReturn (
+    purRet_Id VARCHAR(6) PRIMARY KEY,
+    purchaseId VARCHAR(6),
+    supplierId VARCHAR(6),
+    itemId VARCHAR(6),
+    rtnQuantity INT,
+    reason VARCHAR(50),
+    retAmount DECIMAL(10, 2),
+    returnDate DATE,
+    FOREIGN KEY (purchaseId) REFERENCES Purchase(purchaseId) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (supplierId) REFERENCES Supplier(supplierId) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (itemId) REFERENCES Item(itemId) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+CREATE TABLE PurchasePayment (
+    paymentId VARCHAR(6) PRIMARY KEY,
+    purchaseId VARCHAR(6),
+    supplierId VARCHAR(6),
+    amount DECIMAL(10, 2),
+    paymentDate DATE,
+    FOREIGN KEY (purchaseId) REFERENCES Purchase(purchaseId) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (supplierId) REFERENCES Customer(supplierId) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+CREATE TABLE Stock (
+    stockId VARCHAR(6) PRIMARY KEY,
+    itemId VARCHAR(6),
+    curStockLevel INT,
+    reOrderLevel INT,
+    lastUpdateDate DATE,
+    FOREIGN KEY (itemId) REFERENCES Item(itemId) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+CREATE TABLE Customer (
+    customerId VARCHAR(6) PRIMARY KEY,
+    name VARCHAR(100),
+    nic VARCHAR(50),
+    email VARCHAR(100),
+    phone VARCHAR(50)
+);
+
+
+CREATE TABLE Orders (
+    orderId VARCHAR(6) PRIMARY KEY,
+    customerId VARCHAR(6),
+    employeeId VARCHAR(50),
+    orderDate DATE,
+    FOREIGN KEY (customerId) REFERENCES Customer(customerId) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (employeeId) REFERENCES Employee(employeeId) ON UPDATE CASCADE ON DELETE CASCADE
+
+);    
+
+
+CREATE TABLE OrderDetail (
+    orderId VARCHAR(6),
+    itemId VARCHAR(6),
+    quantity INT,
+    isReturned VARCHAR(5),
+    unitPrice DECIMAL(10, 2),
+    FOREIGN KEY (orderId) REFERENCES Orders(orderId) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (itemId) REFERENCES Item(itemId) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+CREATE TABLE OrderRet (
+    orderRet_Id VARCHAR(6) PRIMARY KEY,
+    orderId VARCHAR(6),
+    customerId VARCHAR(6),
+    itemId VARCHAR(6),
+    RtnQuantity INT,
+    reason VARCHAR(255),
+    retAmount DECIMAL(10, 2),
+    returnDate DATE,
+    FOREIGN KEY (orderId) REFERENCES Orders(orderId) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (customerId) REFERENCES Customer(customerId) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (itemId) REFERENCES Item(itemId) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+CREATE TABLE OrderPayment (
+    paymentId VARCHAR(6) PRIMARY KEY,
+    orderId VARCHAR(6),
+    customerId VARCHAR(6),
+    amount DECIMAL(10, 2),
+    paymentDate DATE,
+    FOREIGN KEY (orderId) REFERENCES Orders(orderId) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (customerId) REFERENCES Customer(customerId) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+CREATE TABLE Bill (
+    serialNo VARCHAR(6) PRIMARY KEY,
+    orderId VARCHAR(6),
+    employeeId VARCHAR(6),
+    unitPrice DECIMAL(10, 2),
+    qty INT,
+    totalAmount DECIMAL(10, 2),
+    FOREIGN KEY (orderId) REFERENCES Orders(orderId) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (employeeId) REFERENCES Employee(employeeId) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+CREATE TABLE Expenses (
+    exp_Id VARCHAR(6) PRIMARY KEY,
+    description VARCHAR(255),
+    amount DECIMAL(10, 2),
+    date DATE,
+    expCategory VARCHAR(50)
+);
+
+
+CREATE TABLE Privileges (
+    privilegeId VARCHAR(6) PRIMARY KEY,
+    role VARCHAR(100),
+    userPrivilege VARCHAR(255),
+    adminId VARCHAR(6),
+    employeeId VARCHAR(6),
+    FOREIGN KEY (adminId) REFERENCES Admin(adminId) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (employeeId) REFERENCES Employee(employeeId) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+Insert into LogInCredentials values("US001", "Admin", "mmmmirzan", "mmm#121243Mirzan");
+Insert into LogInCredentials values("US002", "Employee", "mmzilma", "mmm#121243Ilma");
+
+Insert into Admin values("AD01", "US001", "Mirzan", "200056712492", "zeenathulilma121243@gmail.com", "0758549446");
+
+Insert into Employee values("EM01", "US002", "Ilma","200056712492", "Cashier", "seenathulilma121232@gmail.com", "0750513071", "30000", "5", "31500");
+
+Insert into category values("IC001", "Phones", "Samsung Phones", "Android OS");
+Insert into category values("IC002", "Power Adapters", "C type chargers", "Universal Serial Bus Type-C");
+
+Insert into Item values("I001", "IC001", "Phone", "A20", "Samsung", 10, 4, 35000.0);
+Insert into Item values("I002", "IC002", "Charger", "C Type", "Samsung", 15, 5, 2000.0);
+
+Insert into Customer values("C001", "Amna", "200856712492", "zeenathulilma121243@gmail.com", "0750513071");
+Insert into Customer values("C002", "Virdha", "200456712492", "zeenathulilma121243@gmail.com", "0750816026");

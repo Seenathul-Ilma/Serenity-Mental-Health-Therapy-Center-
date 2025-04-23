@@ -1,0 +1,14 @@
+/* Alternate row colors */
+.table-row-cell:odd {
+    -fx-background-color:  #D4E7C5; /* Light green for odd rows */
+}
+
+.table-row-cell:even {
+    -fx-background-color: #99BC85; /* White for even rows */
+}
+
+/* Change color when a row is selected */
+.table-row-cell:selected {
+    -fx-background-color: #255f38; /* Green */
+    -fx-text-fill: white;
+}
