@@ -22,4 +22,6 @@ public interface PaymentBO extends SuperBO {
     List<String> getAllPaymentIds() throws SQLException, ClassNotFoundException;
 
     PaymentDTO findByPaymentId(String id) throws SQLException, ClassNotFoundException;
+
+    double calculateSessionFee(Double upfront, Double programFee, String duration);
 }

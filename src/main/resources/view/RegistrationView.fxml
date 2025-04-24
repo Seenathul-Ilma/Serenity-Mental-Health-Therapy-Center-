@@ -76,6 +76,7 @@
                                     </Label>
                                  </children>
                               </HBox>
+                              <TextField fx:id="txtUpfront" prefHeight="30.0" prefWidth="275.0" promptText="Upfront Payment" style="-fx-background-color: #D4E7C5; -fx-border-color: #99BC85; -fx-border-width: 1;" />
                               <HBox>
                                  <children>
                                     <ComboBox fx:id="cmbStatus" onAction="#cmbStatusOnAction" prefHeight="27.0" prefWidth="275.0" promptText="Status" style="-fx-background-color: #D4E7C5; -fx-border-color: #99BC85; -fx-border-width: 1;" />
@@ -205,18 +206,6 @@
                                     </HBox>
                                     <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="369.0" spacing="20.0">
                                        <children>
-                                          <Button fx:id="btnAddSession" alignment="CENTER" graphicTextGap="5.0" mnemonicParsing="false" onAction="#btnAddSessionOnAction" prefHeight="30.0" prefWidth="102.0" style="-fx-background-color: #D4E7C5; -fx-border-color: #99BC85; -fx-border-width: 2; -fx-border-radius: 7; -fx-background-radius: 7;" text="Sessions" textAlignment="CENTER" textFill="#255f38">
-                                             <font>
-                                                <Font name="System Bold" size="12.0" />
-                                             </font>
-                                             <graphic>
-                                                <ImageView fitHeight="150.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../Images/add.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Button>
                                           <Button fx:id="btnDelete" alignment="CENTER" graphicTextGap="5.0" mnemonicParsing="false" onAction="#btnDeleteOnAction" prefHeight="30.0" prefWidth="102.0" style="-fx-background-color: #D4E7C5; -fx-border-color: #99BC85; -fx-border-width: 2; -fx-border-radius: 7; -fx-background-radius: 7;" text="Remove" textAlignment="CENTER" textFill="#255f38">
                                              <font>
                                                 <Font name="System Bold" size="12.0" />
@@ -241,10 +230,11 @@
                             <TableView fx:id="tblRegister" onMouseClicked="#onClickTable" style="-fx-background-color: #D4E7C5; -fx-border-color: #99BC85; -fx-border-width: 0 2 2 2;" stylesheets="@../Styles/tables.css" VBox.vgrow="ALWAYS">
                                 <columns>
                                     <TableColumn fx:id="colRegId" prefWidth="133.59998178482056" text="Registration Id" />
-                              <TableColumn fx:id="colPatientId" prefWidth="168.00003051757812" text="Patient Id" />
-                              <TableColumn fx:id="colProId" prefWidth="144.800048828125" text="Program Id" />
-                              <TableColumn fx:id="colRegDate" prefWidth="169.59994506835938" text="Registration Date" />
-                              <TableColumn fx:id="colStatus" prefWidth="121.5999755859375" text="Status" />
+                              <TableColumn fx:id="colPatientId" prefWidth="93.5999755859375" text="Patient Id" />
+                              <TableColumn fx:id="colProId" prefWidth="108.00001525878906" text="Program Id" />
+                              <TableColumn fx:id="colRegDate" prefWidth="108.79995727539062" text="Registration Date" />
+                              <TableColumn fx:id="colRegFee" prefWidth="105.60000610351562" text="Registration Fee" />
+                              <TableColumn fx:id="colStatus" prefWidth="82.39996337890625" text="Status" />
                                 </columns>
                                 <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

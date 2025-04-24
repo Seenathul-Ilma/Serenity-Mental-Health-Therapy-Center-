@@ -11,7 +11,7 @@ public class AppInitializer extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-       FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/Therapist.fxml"));
+       FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/MainLayout.fxml"));
         Parent root = fxmlLoader.load();
         stage.setTitle("Therapy Center");
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/logo1.png")));

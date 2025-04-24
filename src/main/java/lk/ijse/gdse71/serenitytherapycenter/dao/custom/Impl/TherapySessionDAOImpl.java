@@ -152,4 +152,15 @@ public class TherapySessionDAOImpl implements TherapySessionDAO {
             session.close(); // Always close Hibernate sessions
         }
     }
+
+    @Override
+    public boolean save(Session session, TherapySession therapySession) {
+        try {
+            //if data is already existed ? update : else, save data
+            session.merge(therapySession);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

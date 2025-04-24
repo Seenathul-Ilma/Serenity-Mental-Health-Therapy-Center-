@@ -79,8 +79,25 @@ public class PaymentDAOImpl implements PaymentDAO {
     }
 
     @Override
-    public boolean delete(String s) throws SQLException, ClassNotFoundException {
-        return false;
+    public boolean delete(String paymentId) throws SQLException, ClassNotFoundException {
+        Session session = factoryConfiguration.getSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            Payment paymentEntity = session.get(Payment.class, paymentId);
+            if (paymentEntity == null){
+                return false;
+            }
+            session.remove(paymentEntity);
+            transaction.commit();
+            return true;
+        } catch (Exception e) {
+            transaction.rollback();
+            return false;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     @Override
@@ -96,5 +113,16 @@ public class PaymentDAOImpl implements PaymentDAO {
     @Override
     public Optional<Payment> findById(String id) throws SQLException, ClassNotFoundException {
         return Optional.empty();
+    }
+
+    @Override
+    public boolean save(Session session, Payment payment) {
+        try {
+            //if data is already existed ? update : else, save data
+            session.merge(payment);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

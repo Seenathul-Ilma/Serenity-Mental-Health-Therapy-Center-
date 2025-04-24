@@ -3,7 +3,9 @@ package lk.ijse.gdse71.serenitytherapycenter.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.List;
 
 /**
  * --------------------------------------------
@@ -24,6 +26,9 @@ import java.sql.Date;
 public class Enrollment implements SuperEntity {
     @Id
     private String registrationId;
+
+    @Column(nullable = false)
+    private BigDecimal registrationFee;
 
     /*@ManyToOne(fetch = FetchType.LAZY)
     //@MapsId("programId")
@@ -49,7 +54,7 @@ public class Enrollment implements SuperEntity {
 
     private String enrollmentStatus;
 
-    @OneToOne(mappedBy = "enrollment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Payment payment;
+    @OneToMany(mappedBy = "enrollment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Payment> payment;
 
 }

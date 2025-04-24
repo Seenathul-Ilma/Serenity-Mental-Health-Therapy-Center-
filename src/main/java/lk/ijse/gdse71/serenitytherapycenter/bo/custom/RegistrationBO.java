@@ -2,6 +2,7 @@ package lk.ijse.gdse71.serenitytherapycenter.bo.custom;
 
 import lk.ijse.gdse71.serenitytherapycenter.bo.SuperBO;
 import lk.ijse.gdse71.serenitytherapycenter.dto.EnrollmentDTO;
+import lk.ijse.gdse71.serenitytherapycenter.dto.PaymentDTO;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -23,4 +24,7 @@ public interface RegistrationBO extends SuperBO {
 
     EnrollmentDTO findByRegistrationId(String id) throws SQLException, ClassNotFoundException;
 
+    boolean saveRegistrationWithPayment(EnrollmentDTO enrollmentDTO, PaymentDTO paymentDTO) throws SQLException, ClassNotFoundException;
+
+    List<String> getPendingRegistrationIds();
 }

@@ -27,6 +27,7 @@ public class EnrollTM {
         private String patientId;
         private String programId;
         private Date enrollDate;
+        private Double registrationFee;
        // private Double totalCost;
         //private Double pendingPayment;
         private String enrollmentStatus;

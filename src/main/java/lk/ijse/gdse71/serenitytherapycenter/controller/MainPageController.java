@@ -66,12 +66,12 @@ public class MainPageController implements Initializable {
 
     @FXML
     void navigateToPatientPage(ActionEvent event) {
-        navigateTo("/view/Patient.fxml");
+        navigateTo("/view/PatientView.fxml");
     }
 
     @FXML
     void navigateToTherapistPage(ActionEvent event) {
-        navigateTo("/view/Therapist.fxml");
+        navigateTo("/view/TherapistView.fxml");
     }
 
     @FXML
@@ -81,17 +81,17 @@ public class MainPageController implements Initializable {
 
     @FXML
     void navigateToRegistrationPage(ActionEvent event) {
-        navigateTo("/view/Registration.fxml");
+        navigateTo("/view/RegistrationView.fxml");
     }
 
     @FXML
     void navigateToPaymentPage(ActionEvent event) {
-        navigateTo("/view/PaymentTest.fxml");
+        navigateTo("/view/PaymentView.fxml");
     }
 
     @FXML
     void navigateToTherapySessionPage(ActionEvent event) {
-        navigateTo("/view/Session.fxml");
+        navigateTo("/view/TherapySessionView.fxml");
     }
 
     private void navigateTo(String fxmlPath) {
@@ -139,5 +139,7 @@ public class MainPageController implements Initializable {
             btnTherapists.setVisible(false);
             btnTherapyPrograms.setVisible(false);
         }
+
+        navigateTo("/view/RegistrationView.fxml");
     }
 }

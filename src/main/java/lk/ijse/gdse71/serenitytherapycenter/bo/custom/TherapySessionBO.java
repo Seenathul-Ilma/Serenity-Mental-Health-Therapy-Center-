@@ -1,6 +1,7 @@
 package lk.ijse.gdse71.serenitytherapycenter.bo.custom;
 
 import lk.ijse.gdse71.serenitytherapycenter.bo.SuperBO;
+import lk.ijse.gdse71.serenitytherapycenter.dto.PaymentDTO;
 import lk.ijse.gdse71.serenitytherapycenter.dto.TherapySessionDTO;
 
 import java.sql.Date;
@@ -25,4 +26,6 @@ public interface TherapySessionBO extends SuperBO {
     TherapySessionDTO findBySessionId(String selectedSessionId) throws SQLException, ClassNotFoundException;
 
     List<String> checkBookedTherapistsByDate(Date selectedDate);
+
+    boolean saveSessionWithPayment(TherapySessionDTO sessionDTO, PaymentDTO paymentDTO);
 }

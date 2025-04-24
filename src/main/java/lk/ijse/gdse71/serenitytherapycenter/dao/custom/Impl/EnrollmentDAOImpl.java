@@ -135,4 +135,27 @@ public class EnrollmentDAOImpl implements EnrollmentDAO {
         }
         return Optional.of(enrollEntity);
     }
+
+    @Override
+    public boolean save(Session session, Enrollment enrollment) {
+        try {
+            //if data is already existed ? update : else, save data
+            session.merge(enrollment);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public List<String> getPendingIds() {
+        Session session = factoryConfiguration.getSession();
+        Query<String> query = session.createQuery(
+                "select e.registrationId from Enrollment e where e.enrollmentStatus = :status order by e.registrationId ASC",
+                String.class
+        );
+        query.setParameter("status", "Ongoing");
+        List<String> idList = query.list();
+        return idList;
+    }
 }

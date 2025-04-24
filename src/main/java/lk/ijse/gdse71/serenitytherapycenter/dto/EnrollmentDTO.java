@@ -38,4 +38,6 @@ public class EnrollmentDTO {
     //private String paymentStatus;  // 'Paid', 'Upfront paid', 'Pending', 'Overdue'
 
     //private String payment_id;           // Upfront
+
+    private Double registrationFee;
 }

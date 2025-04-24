@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -13,13 +12,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import lk.ijse.gdse71.serenitytherapycenter.bo.BOFactory;
 import lk.ijse.gdse71.serenitytherapycenter.bo.custom.PatientBO;
+import lk.ijse.gdse71.serenitytherapycenter.bo.custom.PaymentBO;
 import lk.ijse.gdse71.serenitytherapycenter.bo.custom.ProgramBO;
 import lk.ijse.gdse71.serenitytherapycenter.bo.custom.RegistrationBO;
 import lk.ijse.gdse71.serenitytherapycenter.dto.EnrollmentDTO;
+import lk.ijse.gdse71.serenitytherapycenter.dto.PaymentDTO;
 import lk.ijse.gdse71.serenitytherapycenter.dto.ProgramDTO;
 import lk.ijse.gdse71.serenitytherapycenter.dto.tm.EnrollTM;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -81,6 +81,9 @@ public class RegistrationController implements Initializable {
     private TableColumn<EnrollTM, Date> colRegDate;
 
     @FXML
+    private TableColumn<EnrollTM, Double> colRegFee;
+
+    @FXML
     private TableColumn<EnrollTM, String> colRegId;
 
     @FXML
@@ -102,6 +105,9 @@ public class RegistrationController implements Initializable {
     private TableView<EnrollTM> tblRegister;
 
     @FXML
+    private TextField txtUpfront;
+
+    @FXML
     private TextField txtSearch;
 
     @FXML
@@ -110,7 +116,7 @@ public class RegistrationController implements Initializable {
     RegistrationBO registrationBO = (RegistrationBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.ENROLLMENT);
     ProgramBO programBO = (ProgramBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.THERAPY_PROGRAM);
     PatientBO patientBO = (PatientBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PATIENT);
-
+    PaymentBO paymentBO = (PaymentBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PAYMENT);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -119,6 +125,7 @@ public class RegistrationController implements Initializable {
         colStatus.setCellValueFactory(new PropertyValueFactory<>("enrollmentStatus"));
         colPatientId.setCellValueFactory(new PropertyValueFactory<>("patientId"));
         colProId.setCellValueFactory(new PropertyValueFactory<>("programId"));
+        colRegFee.setCellValueFactory(new PropertyValueFactory<>("registrationFee"));
 
         try {
             refreshPage();
@@ -136,14 +143,18 @@ public class RegistrationController implements Initializable {
         loadEnrollStatus();
 
         btnSave.setDisable(false);
+        cmbProId.setDisable(false);
+        cmbPatientId.setDisable(false);
+        txtUpfront.setDisable(false);
 
         lblDate.setText(LocalDate.now().toString());
 
         btnUpdate.setDisable(true);
         btnDelete.setDisable(true);
-        btnAddSession.setDisable(true);
+        //btnAddSession.setDisable(true);
         btnReset.setDisable(false);
         txtSearch.setText("");
+        txtUpfront.setText("");
         lblProFee.setText("");
         cmbStatus.getSelectionModel().clearSelection();
         cmbPatientId.getSelectionModel().clearSelection();
@@ -152,7 +163,7 @@ public class RegistrationController implements Initializable {
 
     private void loadEnrollStatus() {
         ObservableList<String> status = FXCollections.observableArrayList(
-                "Active", "Completed", "Cancelled"
+                "Ongoing", "Completed"
         );
         System.out.println("load enroll status");
         cmbStatus.setItems(status);
@@ -185,6 +196,7 @@ public class RegistrationController implements Initializable {
                     enrollmentDTO.getPatientId(),
                     enrollmentDTO.getProgramId(),
                     enrollmentDTO.getEnrollmentDate(),
+                    enrollmentDTO.getRegistrationFee(),
                     enrollmentDTO.getEnrollmentStatus()
             );
             enrollTMS.add(enrollTM);
@@ -230,32 +242,49 @@ public class RegistrationController implements Initializable {
         String programId = cmbProId.getSelectionModel().getSelectedItem();
         String enrollmentStatus = cmbStatus.getSelectionModel().getSelectedItem();
         Date dateOfEnroll = Date.valueOf(lblDate.getText());
+        String upfrontPayment = txtUpfront.getText().trim(); // clean string
 
+
+        String paymentPattern = "^(\\d+(\\.\\d{1,2})?)$";
+        boolean isValidPayment = upfrontPayment.matches(paymentPattern);
 
         if (cmbPatientId.getSelectionModel().getSelectedItem() == null || cmbProId.getSelectionModel().getSelectedItem() == null || cmbStatus.getSelectionModel().getSelectedItem() == null) {
             new Alert(Alert.AlertType.ERROR, "Please select patient id, program id and status before saving..!").show();
             return;
+        } else if (!isValidPayment) {
+            new Alert(Alert.AlertType.ERROR, "Please enter valid payment.").show();
+            return;
         } else {
+
+            double registrationFee = Math.abs(Double.parseDouble(upfrontPayment)); // parse & fix negatives
 
             EnrollmentDTO enrollmentDTO = new EnrollmentDTO(
                     registrationId,
                     programId,
                     patientId,
                     dateOfEnroll,
-                    enrollmentStatus
+                    enrollmentStatus,
+                    registrationFee
             );
 
-            boolean isSaved = registrationBO.saveRegistration(enrollmentDTO);
+            Optional<String> nextPaymentIdOptional = paymentBO.getNextPaymentId();
+            String nextPaymentId = nextPaymentIdOptional.orElse("PAY001");
+            Date today = new Date(System.currentTimeMillis());
+
+            PaymentDTO paymentDTO = new PaymentDTO(
+                    nextPaymentId,
+                    today,
+                    registrationFee,
+                    patientId,
+                    "Upfront Payment", programId, registrationId, null
+            );
+
+            boolean isSaved = registrationBO.saveRegistrationWithPayment(enrollmentDTO, paymentDTO);
 
             if (isSaved) {
                 Alert saveAlert = new Alert(Alert.AlertType.INFORMATION, "Registration saved successfully...!");
                 saveAlert.showAndWait(); // Wait until the user clicks "OK"
 
-                // After the user clicks OK, show another message asking them to collect the payment
-                Alert paymentAlert = new Alert(Alert.AlertType.INFORMATION, "Please collect the payment from the patient.");
-                paymentAlert.showAndWait();
-
-                navigateToPaymentPage();
                 refreshPage();
             } else {
                 new Alert(Alert.AlertType.ERROR, "Fail to save registration...!").show();
@@ -266,43 +295,6 @@ public class RegistrationController implements Initializable {
 
     @FXML
     void btnNavigateToPaymentAction(ActionEvent event) {
-    }
-
-    private void navigateToPaymentPage() throws SQLException, ClassNotFoundException {
-        try {
-            content.getChildren().clear();
-            URL fxmlUrl = getClass().getResource("/view/PaymentTest.fxml");
-
-            if (fxmlUrl == null) {
-                throw new RuntimeException("FXML file not found!");
-            }
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/PaymentTest.fxml"));
-            AnchorPane load = loader.load(); // Loads the FXML file and binds the controller
-
-            System.out.println("reg: "+lblRegisterId.getText());
-
-            PaymentController paymentController = loader.getController();
-            paymentController.initData(
-                    cmbPatientId.getSelectionModel().getSelectedItem(),
-                    cmbProId.getSelectionModel().getSelectedItem(),
-                    lblRegisterId.getText(), "N/A" , false// "Upfront Payment"
-            );
-            load.prefWidthProperty().bind(content.widthProperty());
-            load.prefHeightProperty().bind(content.heightProperty());
-
-            content.getChildren().add(load);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Fail to load page!").show();
-        } catch (RuntimeException re) {
-            re.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, re.getMessage()).show();
-        }
-    }
-
-    private void resetStyles() {
     }
 
     @FXML
@@ -317,27 +309,40 @@ public class RegistrationController implements Initializable {
         String programId = cmbProId.getSelectionModel().getSelectedItem();
         String enrollmentStatus = cmbStatus.getSelectionModel().getSelectedItem();
         Date dateOfEnroll = Date.valueOf(lblDate.getText());
+        String upfrontPayment = txtUpfront.getText().trim(); // clean string
+
+
+        String paymentPattern = "^(\\d+(\\.\\d{1,2})?)$";
+        boolean isValidPayment = upfrontPayment.matches(paymentPattern);
 
         if (cmbPatientId.getSelectionModel().getSelectedItem() == null || cmbProId.getSelectionModel().getSelectedItem() == null || cmbStatus.getSelectionModel().getSelectedItem() == null) {
-            new Alert(Alert.AlertType.ERROR, "Please select patient id, program id and status before updating..!").show();
+            new Alert(Alert.AlertType.ERROR, "Please select patient id, program id and status before saving..!").show();
+            return;
+        } else if (!isValidPayment) {
+            new Alert(Alert.AlertType.ERROR, "Please enter valid payment.").show();
             return;
         } else {
+
+            double registrationFee = Math.abs(Double.parseDouble(upfrontPayment)); // parse & fix negatives
 
             EnrollmentDTO enrollmentDTO = new EnrollmentDTO(
                     registrationId,
                     programId,
                     patientId,
                     dateOfEnroll,
-                    enrollmentStatus
+                    enrollmentStatus,
+                    registrationFee
             );
 
             boolean isUpdated = registrationBO.updateRegistration(enrollmentDTO);
 
             if (isUpdated) {
+                Alert saveAlert = new Alert(Alert.AlertType.INFORMATION, "Registration updated successfully...!");
+                saveAlert.showAndWait(); // Wait until the user clicks "OK"
+
                 refreshPage();
-                new Alert(Alert.AlertType.INFORMATION, "Patient successfully updated...!").show();
             } else {
-                new Alert(Alert.AlertType.ERROR, "Fail to update patient...!").show();
+                new Alert(Alert.AlertType.ERROR, "Failed to update registration...!").show();
             }
         }
     }
@@ -366,11 +371,15 @@ public class RegistrationController implements Initializable {
             cmbStatus.setValue(enrollTM.getEnrollmentStatus());
             cmbPatientId.setValue(enrollTM.getPatientId());
             cmbProId.setValue(enrollTM.getProgramId());
+            txtUpfront.setText(enrollTM.getRegistrationFee().toString());
+            txtUpfront.setDisable(true);
+            cmbPatientId.setDisable(true);
+            cmbProId.setDisable(true);
 
             btnSave.setDisable(true);
             btnDelete.setDisable(false);
             btnUpdate.setDisable(false);
-            btnAddSession.setDisable(false);
+            //btnAddSession.setDisable(false);
            // btnCollectRegFee.setDisable(false);
         }
     }
@@ -378,38 +387,5 @@ public class RegistrationController implements Initializable {
     public void cmbStatusOnAction(ActionEvent actionEvent) {
     }
 
-    public void btnAddSessionOnAction(ActionEvent actionEvent) {
-        try {
-            content.getChildren().clear();
-            URL fxmlUrl = getClass().getResource("/view/Session.fxml");
-
-            if (fxmlUrl == null) {
-                throw new RuntimeException("FXML file not found!");
-            }
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Session.fxml"));
-            AnchorPane load = loader.load(); // Loads the FXML file and binds the controller
-
-            System.out.println("reg: "+lblRegisterId.getText());
-
-            TherapySessionController therapySessionController = loader.getController();
-            therapySessionController.initData(
-                    lblRegisterId.getText(),
-                    cmbProId.getSelectionModel().getSelectedItem(),
-                    cmbPatientId.getSelectionModel().getSelectedItem(), false// "Upfront Payment"
-            );
-            load.prefWidthProperty().bind(content.widthProperty());
-            load.prefHeightProperty().bind(content.heightProperty());
-
-            content.getChildren().add(load);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Fail to load page!").show();
-        } catch (RuntimeException re) {
-            re.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, re.getMessage()).show();
-        }
-    }
 }
 

@@ -38,7 +38,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -133,7 +132,7 @@ public class PaymentController implements Initializable {
         lblSessionId.setText(sessionId);
         btnSave.setDisable(isNavigateSaveBtn);
 
-       // paymentType = payType;
+        // paymentType = payType;
 
         // You can now use them in initialize method or later
         System.out.println("Received: " + patientId + ", " + programId + ", " + registrationId);
@@ -147,8 +146,6 @@ public class PaymentController implements Initializable {
         colPayAmount.setCellValueFactory(new PropertyValueFactory<>("paymentAmount"));
         colPayDate.setCellValueFactory(new PropertyValueFactory<>("paymentDate"));
         colProId.setCellValueFactory(new PropertyValueFactory<>("programId"));
-        //colRegId.setCellValueFactory(new PropertyValueFactory<>("registration_id"));
-        //colSessionId.setCellValueFactory(new PropertyValueFactory<>("session_id"));
         colPayType.setCellValueFactory(new PropertyValueFactory<>("paymentType"));
 
         // Smart binding for session or registration based on payment type
@@ -169,28 +166,9 @@ public class PaymentController implements Initializable {
     }
 
     private void refreshPage() throws SQLException, ClassNotFoundException {
-        loadNextPaymentId();
         loadTableData();
 
-        btnSave.setDisable(true);
-
-        lblDate.setText(LocalDate.now().toString());
-
-        btnDelete.setDisable(true);
         btnPrint.setDisable(true);
-        btnReset.setDisable(false);
-        txtSearch.setText("");
-        lblRegistrationId.setText("");
-        lblSessionId.setText("");
-        lblPatId.setText("");
-        lblProId.setText("");
-        txtPayAmount.setText("");
-    }
-
-    private void loadNextPaymentId() throws SQLException, ClassNotFoundException {
-        Optional<String> nextPaymentIdOptional = paymentBO.getNextPaymentId();
-        String nextPaymentId = nextPaymentIdOptional.orElse("PAY001");
-        lblPayId.setText(nextPaymentId);
     }
 
     private void loadTableData() throws SQLException, ClassNotFoundException {
@@ -198,7 +176,7 @@ public class PaymentController implements Initializable {
 
         ObservableList<PaymentTM> paymentTMS = FXCollections.observableArrayList();
 
-        for(PaymentDTO paymentDTO : paymentDTOS){
+        for (PaymentDTO paymentDTO : paymentDTOS) {
 
             PaymentTM paymentTM = new PaymentTM(
                     paymentDTO.getPaymentId(),
@@ -221,8 +199,24 @@ public class PaymentController implements Initializable {
     }
 
     @FXML
-    void btnDeleteOnAction(ActionEvent event) {
+    void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
+        PaymentTM paymentTM = tblPayment.getSelectionModel().getSelectedItem();
+        String paymentId = paymentTM.getPaymentId();
 
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
+        Optional<ButtonType> optionalButtonType = alert.showAndWait();
+
+        if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
+
+            boolean isDeleted = paymentBO.deletePayment(paymentId);
+
+            if (isDeleted) {
+                refreshPage();
+                new Alert(Alert.AlertType.INFORMATION, "Payment record deleted...!").show();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Fail to delete payment record...!").show();
+            }
+        }
     }
 
     @FXML
@@ -237,7 +231,7 @@ public class PaymentController implements Initializable {
 
     @FXML
     void btnSaveOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
-        String paymentId = lblPayId.getText();
+        /*String paymentId = lblPayId.getText();
         String patientId = lblPatId.getText();
         String programId = lblProId.getText();
         String registrationId = lblRegistrationId.getText();
@@ -252,9 +246,9 @@ public class PaymentController implements Initializable {
             return;
         } else {
 
-           /* if(sessionId.matches("N/A")) {
+           *//* if(sessionId.matches("N/A")) {
                 paymentType = "Upfront Payment";
-            }*/
+            }*//*
 
             String paymentType;
             if (sessionId == null || sessionId.equalsIgnoreCase("N/A")) {
@@ -285,7 +279,7 @@ public class PaymentController implements Initializable {
             } else {
                 new Alert(Alert.AlertType.ERROR, "Fail to save payment...!").show();
             }
-        }
+        }*/
 
     }
 
@@ -335,7 +329,7 @@ public class PaymentController implements Initializable {
             stage.setResizable(false);
 
             stage.initModality(Modality.APPLICATION_MODAL);
-            Window underWindow = btnReset.getScene().getWindow();
+            Window underWindow = btnPrint.getScene().getWindow();
             stage.initOwner(underWindow);
 
             stage.showAndWait();

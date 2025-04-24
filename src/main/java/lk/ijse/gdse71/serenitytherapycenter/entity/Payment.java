@@ -38,7 +38,7 @@ public class Payment implements SuperEntity {
     private BigDecimal paymentAmount;
     //private String therapySessionId;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     //@MapsId("registrationId")
     @JoinColumn(name = "registration_id")
     private Enrollment enrollment;
