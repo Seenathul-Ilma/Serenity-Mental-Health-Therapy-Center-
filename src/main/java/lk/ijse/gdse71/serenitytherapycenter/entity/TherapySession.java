@@ -27,6 +27,7 @@ public class TherapySession implements SuperEntity {
     @Id
     private String sessionId;
 
+    @Column(nullable = false)
     private String registrationId;  // Just storing ID, no relation here
 
     @ManyToOne(fetch = FetchType.LAZY)

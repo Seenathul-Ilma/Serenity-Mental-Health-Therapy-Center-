@@ -233,7 +233,6 @@ public class TherapySessionController implements Initializable {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Something went wrong while loading registration details.").show();
         }
-
     }
 
     private void loadTableData() throws SQLException, ClassNotFoundException {
@@ -354,8 +353,8 @@ public class TherapySessionController implements Initializable {
                         nextPaymentId,
                         dateOfSession,
                         sessionPayment,
-                        patientId,
                         "Session Payment",
+                        patientId,
                         programId,
                         registrationId,
                         sessionId
@@ -422,6 +421,7 @@ public class TherapySessionController implements Initializable {
         TherapySessionDTO sessionDTO = new TherapySessionDTO(
                 sessionId, registrationId, programId, therapistId, patientId, dateOfSession, status
         );
+        System.out.println("Reg 1:"+registrationId);
 
         try {
             if (status.equals("Completed")) {
@@ -435,8 +435,8 @@ public class TherapySessionController implements Initializable {
                         nextPaymentId,
                         dateOfSession,
                         sessionPayment,
-                        patientId,
                         "Session Payment",
+                        patientId,
                         programId,
                         registrationId,
                         sessionId

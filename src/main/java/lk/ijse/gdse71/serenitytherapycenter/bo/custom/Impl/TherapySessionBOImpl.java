@@ -170,6 +170,7 @@ public class TherapySessionBOImpl implements TherapySessionBO {
             therapySession.setTherapist(therapist);
             therapySession.setTherapyProgram(program);
             therapySession.setSessionDate(therapySessionDTO.getSessionDate());
+            therapySession.setRegistrationId(therapySessionDTO.getRegistrationId());
             therapySession.setSessionStatus(therapySessionDTO.getSessionStatus());
 
             // Save TherapySession
@@ -194,6 +195,8 @@ public class TherapySessionBOImpl implements TherapySessionBO {
                         enrollment,
                         therapySession// Set sessionId for the payment
                 );
+
+
 
                 // Save Payment
                 boolean isPaymentSaved = paymentDAO.save(session, payment);
