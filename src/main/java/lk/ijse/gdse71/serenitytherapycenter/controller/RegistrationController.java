@@ -96,6 +96,9 @@ public class RegistrationController implements Initializable {
     private Label lblDate;
 
     @FXML
+    private Label lblStatus;
+
+    @FXML
     private Label lblProFee;
     
     @FXML
@@ -140,7 +143,7 @@ public class RegistrationController implements Initializable {
         loadTableData();
         loadPatientIds();
         loadProgramIds();
-        loadEnrollStatus();
+        //loadEnrollStatus();
 
         btnSave.setDisable(false);
         cmbProId.setDisable(false);
@@ -156,7 +159,8 @@ public class RegistrationController implements Initializable {
         txtSearch.setText("");
         txtUpfront.setText("");
         lblProFee.setText("");
-        cmbStatus.getSelectionModel().clearSelection();
+        lblStatus.setText("");
+        //cmbStatus.getSelectionModel().clearSelection();
         cmbPatientId.getSelectionModel().clearSelection();
         cmbProId.getSelectionModel().clearSelection();
     }
@@ -240,7 +244,8 @@ public class RegistrationController implements Initializable {
         String registrationId = lblRegisterId.getText();
         String patientId = cmbPatientId.getSelectionModel().getSelectedItem();
         String programId = cmbProId.getSelectionModel().getSelectedItem();
-        String enrollmentStatus = cmbStatus.getSelectionModel().getSelectedItem();
+        //String enrollmentStatus = cmbStatus.getSelectionModel().getSelectedItem();
+        String enrollmentStatus = lblStatus.getText();
         Date dateOfEnroll = Date.valueOf(lblDate.getText());
         String upfrontPayment = txtUpfront.getText().trim(); // clean string
 
@@ -248,8 +253,9 @@ public class RegistrationController implements Initializable {
         String paymentPattern = "^(\\d+(\\.\\d{1,2})?)$";
         boolean isValidPayment = upfrontPayment.matches(paymentPattern);
 
-        if (cmbPatientId.getSelectionModel().getSelectedItem() == null || cmbProId.getSelectionModel().getSelectedItem() == null || cmbStatus.getSelectionModel().getSelectedItem() == null) {
-            new Alert(Alert.AlertType.ERROR, "Please select patient id, program id and status before saving..!").show();
+        //if (cmbPatientId.getSelectionModel().getSelectedItem() == null || cmbProId.getSelectionModel().getSelectedItem() == null || cmbStatus.getSelectionModel().getSelectedItem() == null) {
+        if (cmbPatientId.getSelectionModel().getSelectedItem() == null || cmbProId.getSelectionModel().getSelectedItem() == null) {
+            new Alert(Alert.AlertType.ERROR, "Please select patient id, program id before saving..!").show();
             return;
         } else if (!isValidPayment) {
             new Alert(Alert.AlertType.ERROR, "Please enter valid payment.").show();
@@ -282,10 +288,32 @@ public class RegistrationController implements Initializable {
             boolean isSaved = registrationBO.saveRegistrationWithPayment(enrollmentDTO, paymentDTO);
 
             if (isSaved) {
-                Alert saveAlert = new Alert(Alert.AlertType.INFORMATION, "Registration saved successfully...!");
-                saveAlert.showAndWait(); // Wait until the user clicks "OK"
+                //Alert saveAlert = new Alert(Alert.AlertType.INFORMATION, "Registration saved successfully...!");
+               // saveAlert.showAndWait(); // Wait until the user clicks "OK"
+
+                double totalPaid = paymentBO.getTotalPaidAmountForEnrollment(registrationId);
+
+                ProgramDTO programDTO = programBO.findByProgramId(programId);
+
+                if (programDTO == null) {
+                    new Alert(Alert.AlertType.ERROR, "Program not found.").show();
+                    return;
+                }
+                //lblProFee.setText(programDTO.getCost().toString());
+                double programCost = programDTO.getCost();
+
+                System.out.println("Total Paid: " + totalPaid + ", Program Cost: " + programCost);
+
+                if (totalPaid >= programCost) {
+                    boolean isStatusUpdated = registrationBO.updateEnrollmentStatus(registrationId, "Completed");
+                    if (isStatusUpdated) {
+                        System.out.println("Enrollment marked as completed.");
+                    }
+                }
 
                 refreshPage();
+                new Alert(Alert.AlertType.INFORMATION, "Registration saved successfully...!").show();
+
             } else {
                 new Alert(Alert.AlertType.ERROR, "Fail to save registration...!").show();
             }
@@ -307,7 +335,8 @@ public class RegistrationController implements Initializable {
         String registrationId = lblRegisterId.getText();
         String patientId = cmbPatientId.getSelectionModel().getSelectedItem();
         String programId = cmbProId.getSelectionModel().getSelectedItem();
-        String enrollmentStatus = cmbStatus.getSelectionModel().getSelectedItem();
+        //String enrollmentStatus = cmbStatus.getSelectionModel().getSelectedItem();
+        String enrollmentStatus = lblStatus.getText();
         Date dateOfEnroll = Date.valueOf(lblDate.getText());
         String upfrontPayment = txtUpfront.getText().trim(); // clean string
 
@@ -337,9 +366,19 @@ public class RegistrationController implements Initializable {
             boolean isUpdated = registrationBO.updateRegistration(enrollmentDTO);
 
             if (isUpdated) {
-                Alert saveAlert = new Alert(Alert.AlertType.INFORMATION, "Registration updated successfully...!");
-                saveAlert.showAndWait(); // Wait until the user clicks "OK"
+                new Alert(Alert.AlertType.INFORMATION, "Registration updated successfully...!");
 
+                double totalPaid = paymentBO.getTotalPaidAmountForEnrollment(registrationId);
+                ProgramDTO programDTO = programBO.findByProgramId(programId);
+                if (programDTO != null) {
+                    double programCost = programDTO.getCost();
+                    if (totalPaid >= programCost) {
+                        boolean isStatusUpdated = registrationBO.updateEnrollmentStatus(registrationId, "Completed");
+                        if (isStatusUpdated) {
+                            System.out.println("Enrollment marked as completed.");
+                        }
+                    }
+                }
                 refreshPage();
             } else {
                 new Alert(Alert.AlertType.ERROR, "Failed to update registration...!").show();
@@ -360,6 +399,7 @@ public class RegistrationController implements Initializable {
 
         if (programDTO != null) {
             lblProFee.setText(programDTO.getCost().toString());
+            lblStatus.setText("Ongoing");
         }
     }
 
@@ -368,7 +408,8 @@ public class RegistrationController implements Initializable {
         EnrollTM enrollTM = tblRegister.getSelectionModel().getSelectedItem();
         if(enrollTM != null){
             lblRegisterId.setText(enrollTM.getRegistrationId());
-            cmbStatus.setValue(enrollTM.getEnrollmentStatus());
+            //cmbStatus.setValue(enrollTM.getEnrollmentStatus());
+            lblStatus.setText(enrollTM.getEnrollmentStatus());
             cmbPatientId.setValue(enrollTM.getPatientId());
             cmbProId.setValue(enrollTM.getProgramId());
             txtUpfront.setText(enrollTM.getRegistrationFee().toString());

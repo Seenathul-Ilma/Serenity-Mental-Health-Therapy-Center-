@@ -137,6 +137,16 @@ public class PaymentBOImpl implements PaymentBO {
         }
     }
 
+    @Override
+    public Optional<Object> findBySessionId(String sessionId) {
+        return paymentDAO.findBySessionId(sessionId);
+    }
+
+    @Override
+    public double getTotalPaidAmountForEnrollment(String registrationId) {
+        return paymentDAO.getTotalPaidAmountByEnrollmentId(registrationId);
+    }
+
     private int extractNumber(String duration) {
         return Integer.parseInt(duration.replaceAll("\\D+", ""));
     }

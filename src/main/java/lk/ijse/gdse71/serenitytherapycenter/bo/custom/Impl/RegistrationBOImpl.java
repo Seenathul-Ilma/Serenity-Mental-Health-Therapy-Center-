@@ -220,4 +220,9 @@ public class RegistrationBOImpl implements RegistrationBO {
         return enrollIds;
     }
 
+    @Override
+    public boolean updateEnrollmentStatus(String registrationId, String newStatus) {
+        return enrollmentDAO.updateEnrollmentStatus(registrationId, newStatus);
+    }
+
 }

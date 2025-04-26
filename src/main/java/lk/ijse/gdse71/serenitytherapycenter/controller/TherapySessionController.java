@@ -300,6 +300,12 @@ public class TherapySessionController implements Initializable {
     void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String sessionId = lblSessionId.getText();
 
+        Optional<Object> existPaymentDTO = paymentBO.findBySessionId(sessionId);
+        if (existPaymentDTO.isPresent()) {
+            new Alert(Alert.AlertType.ERROR, "Cannot delete completed session..!").show();
+            return;
+        }
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
         Optional<ButtonType> optionalButtonType = alert.showAndWait();
 
@@ -363,6 +369,27 @@ public class TherapySessionController implements Initializable {
                 boolean success = therapySessionBO.saveSessionWithPayment(sessionDTO, paymentDTO);
 
                 if (success) {
+
+                    double totalPaid = paymentBO.getTotalPaidAmountForEnrollment(registrationId);
+
+                    ProgramDTO programDTO = programBO.findByProgramId(programId);
+
+                    if (programDTO == null) {
+                        new Alert(Alert.AlertType.ERROR, "Program not found.").show();
+                        return;
+                    }
+                    //lblProFee.setText(programDTO.getCost().toString());
+                    double programCost = programDTO.getCost();
+
+                    System.out.println("Total Paid: " + totalPaid + ", Program Cost: " + programCost);
+
+                    if (totalPaid >= programCost) {
+                        boolean isStatusUpdated = registrationBO.updateEnrollmentStatus(registrationId, "Completed");
+                        if (isStatusUpdated) {
+                            System.out.println("Enrollment marked as completed.");
+                        }
+                    }
+
                     lblPaymentStatus.setText("Completed");
                     new Alert(Alert.AlertType.INFORMATION, "Session and Payment saved successfully!").show();
                     refreshPage();
@@ -424,7 +451,16 @@ public class TherapySessionController implements Initializable {
         System.out.println("Reg 1:"+registrationId);
 
         try {
+
+
             if (status.equals("Completed")) {
+
+                Optional<Object> existPaymentDTO = paymentBO.findBySessionId(sessionId);
+                if (existPaymentDTO.isPresent()) {
+                    new Alert(Alert.AlertType.ERROR, "Cannot update completed session..!").show();
+                    return;
+                }
+
                 // double sessionFee = Double.parseDouble(lblSessionPayment.getText());
                 lblPaymentStatus.setText("Completed");
 
@@ -445,6 +481,26 @@ public class TherapySessionController implements Initializable {
                 boolean success = therapySessionBO.saveSessionWithPayment(sessionDTO, paymentDTO);
 
                 if (success) {
+                    double totalPaid = paymentBO.getTotalPaidAmountForEnrollment(registrationId);
+
+                    ProgramDTO programDTO = programBO.findByProgramId(programId);
+
+                    if (programDTO == null) {
+                        new Alert(Alert.AlertType.ERROR, "Program not found.").show();
+                        return;
+                    }
+                    //lblProFee.setText(programDTO.getCost().toString());
+                    double programCost = programDTO.getCost();
+
+                    System.out.println("Total Paid: " + totalPaid + ", Program Cost: " + programCost);
+
+                    if (totalPaid >= programCost) {
+                        boolean isStatusUpdated = registrationBO.updateEnrollmentStatus(registrationId, "Completed");
+                        if (isStatusUpdated) {
+                            System.out.println("Enrollment marked as completed.");
+                        }
+                    }
+
                     lblPaymentStatus.setText("Completed");
                     new Alert(Alert.AlertType.INFORMATION, "Session and Payment updated successfully!").show();
                     refreshPage();
@@ -453,6 +509,12 @@ public class TherapySessionController implements Initializable {
                 }
 
             } else {
+
+                Optional<Object> existPaymentDTO = paymentBO.findBySessionId(sessionId);
+                if (existPaymentDTO.isPresent()) {
+                    new Alert(Alert.AlertType.ERROR, "Cannot update completed sessions again..!").show();
+                    return;
+                }
                 // Just save session
                 lblPaymentStatus.setText("Pending");
                 boolean isUpdated = therapySessionBO.updateSession(sessionDTO);

@@ -3,10 +3,12 @@ package lk.ijse.gdse71.serenitytherapycenter.dao.custom.Impl;
 import lk.ijse.gdse71.serenitytherapycenter.config.FactoryConfiguration;
 import lk.ijse.gdse71.serenitytherapycenter.dao.custom.PaymentDAO;
 import lk.ijse.gdse71.serenitytherapycenter.entity.Payment;
+import lk.ijse.gdse71.serenitytherapycenter.entity.TherapySession;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -123,6 +125,41 @@ public class PaymentDAOImpl implements PaymentDAO {
             return true;
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    @Override
+    public Optional<Object> findBySessionId(String sessionId) {
+        Session session = factoryConfiguration.getSession();
+        try {
+            Query query = session.createQuery("FROM Payment p WHERE p.therapySession.sessionId = :sessionId");
+            query.setParameter("sessionId", sessionId);
+            List<Payment> list = query.list();
+
+            if (list.isEmpty()) {
+                return Optional.empty();
+            } else {
+                return Optional.of(list.get(0));
+            }
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public double getTotalPaidAmountByEnrollmentId(String registrationId) {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        try {
+            Query<BigDecimal> query = session.createQuery(
+                    "SELECT COALESCE(SUM(p.paymentAmount), 0.0) FROM Payment p WHERE p.enrollment.id = :id", BigDecimal.class);
+            query.setParameter("id", registrationId);
+
+            BigDecimal totalPaid = query.uniqueResult();
+
+            // If the result is null, return 0.0; otherwise, return the BigDecimal value as double
+            return totalPaid != null ? totalPaid.doubleValue() : 0.0;
+        } finally {
+            session.close();
         }
     }
 }

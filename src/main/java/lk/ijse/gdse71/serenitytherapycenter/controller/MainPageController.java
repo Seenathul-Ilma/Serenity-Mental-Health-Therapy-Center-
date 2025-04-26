@@ -81,7 +81,7 @@ public class MainPageController implements Initializable {
 
     @FXML
     void navigateToRegistrationPage(ActionEvent event) {
-        navigateTo("/view/RegistrationView.fxml");
+        navigateTo("/view/RegistrationViewNew.fxml");
     }
 
     @FXML
@@ -140,6 +140,6 @@ public class MainPageController implements Initializable {
             btnTherapyPrograms.setVisible(false);
         }
 
-        navigateTo("/view/RegistrationView.fxml");
+        navigateTo("/view/RegistrationViewNew.fxml");
     }
 }

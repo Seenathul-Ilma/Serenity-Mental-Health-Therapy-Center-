@@ -21,4 +21,6 @@ public interface EnrollmentDAO extends CrudDAO<Enrollment, String> {
     boolean save(Session session, Enrollment enrollment);
 
     List<String> getPendingIds();
+
+    boolean updateEnrollmentStatus(String registrationId, String newStatus);
 }

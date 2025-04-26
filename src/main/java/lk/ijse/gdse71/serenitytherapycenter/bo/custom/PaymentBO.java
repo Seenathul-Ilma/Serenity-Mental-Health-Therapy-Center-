@@ -25,4 +25,7 @@ public interface PaymentBO extends SuperBO {
 
     double calculateSessionFee(Double upfront, Double programFee, String duration);
 
+    Optional<Object> findBySessionId(String sessionId);
+
+    double getTotalPaidAmountForEnrollment(String registrationId);
 }

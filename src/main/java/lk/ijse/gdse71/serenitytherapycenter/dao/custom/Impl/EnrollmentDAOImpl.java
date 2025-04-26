@@ -158,4 +158,28 @@ public class EnrollmentDAOImpl implements EnrollmentDAO {
         List<String> idList = query.list();
         return idList;
     }
+
+    @Override
+    public boolean updateEnrollmentStatus(String registrationId, String newStatus) {
+        Session session = factoryConfiguration.getSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            Query query = session.createQuery("UPDATE Enrollment e SET e.enrollmentStatus = :status WHERE registrationId = :id");
+            query.setParameter("status", newStatus);
+            query.setParameter("id", registrationId);
+
+            int updated = query.executeUpdate();
+            transaction.commit();
+
+            return updated > 0;
+        } catch (Exception e) {
+            transaction.rollback();
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
 }

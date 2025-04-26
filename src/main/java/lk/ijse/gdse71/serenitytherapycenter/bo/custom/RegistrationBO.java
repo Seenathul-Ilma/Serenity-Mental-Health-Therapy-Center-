@@ -27,4 +27,6 @@ public interface RegistrationBO extends SuperBO {
     boolean saveRegistrationWithPayment(EnrollmentDTO enrollmentDTO, PaymentDTO paymentDTO) throws SQLException, ClassNotFoundException;
 
     List<String> getPendingRegistrationIds();
+
+    boolean updateEnrollmentStatus(String registrationId, String completed);
 }
