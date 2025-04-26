@@ -144,7 +144,7 @@ public class ScheduleTherapistController implements Initializable {
         DayOfWeek selectedDay = selectedDate.getDayOfWeek();
 
         String dayType = getDayType(selectedDay);
-
+        //ArrayList<TherapistDTO> allTherapists = therapistBO.checkAvailableTherapistsByDay(selectedDay, dayType);
         ArrayList<TherapistDTO> allTherapists = therapistBO.checkAvailableTherapistsByDay(selectedDay, dayType);
 
         // Remove the booked therapists from the available list

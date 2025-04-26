@@ -140,15 +140,19 @@ public class TherapistDAOImpl implements TherapistDAO {
 
     @Override
     public List<Therapist> getAvailableTherapists(DayOfWeek selectedDay, String dayType) {
+    //public List<Therapist> getAvailableTherapists(DayOfWeek selectedDay) {
         Session session = factoryConfiguration.getSession();
 
         try {
-            String hql = "FROM Therapist WHERE availability = :selectedDay OR availability = :dayType";
+            String selectedDayName = capitalizeFirst(selectedDay.toString().toLowerCase()); // "Monday"
+
+            //String hql = "FROM Therapist WHERE availability = :selectedDay OR availability = :dayType";
+            String hql = "FROM Therapist t WHERE t.availability LIKE CONCAT('%', :dayName, '%') or t.availability = :dayType";
             Query<Therapist> therapistQuery = session.createQuery(hql, Therapist.class);
 
-            String dayName = capitalizeFirst(selectedDay.toString().toLowerCase()); // e.g., "Monday"
-
-            therapistQuery.setParameter("selectedDay", dayName);
+            //therapistQuery.setParameter("selectedDay", dayName);
+            //therapistQuery.setParameter("dayType", dayType);
+            therapistQuery.setParameter("dayName", selectedDayName);
             therapistQuery.setParameter("dayType", dayType);
 
             return therapistQuery.list();
@@ -159,6 +163,10 @@ public class TherapistDAOImpl implements TherapistDAO {
     }
 
     private String capitalizeFirst(String day) {
-        return day.substring(0, 1).toUpperCase() + day.substring(1).toLowerCase();
+        //return day.substring(0, 1).toUpperCase() + day.substring(1).toLowerCase();
+        if (day == null || day.isEmpty()) {
+            return day;
+        }
+        return day.substring(0, 1).toUpperCase() + day.substring(1);
     }
 }

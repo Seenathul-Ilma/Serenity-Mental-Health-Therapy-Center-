@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="content" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse71.serenitytherapycenter.controller.RegistrationController">
+<AnchorPane fx:id="content" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="800.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse71.serenitytherapycenter.controller.RegistrationController">
     <children>
         <VBox prefHeight="500.0" prefWidth="800.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -66,22 +66,32 @@
                               </HBox>
                               <HBox spacing="10.0">
                                  <children>
-                                    <Label fx:id="lblProFee" prefHeight="30.0" prefWidth="275.0" style="-fx-background-color: #D4E7C5; -fx-border-color: #99BC85; -fx-border-width: 1;" text=" Program Fee">
-                                       <padding>
-                                          <Insets bottom="5.0" left="5.0" top="5.0" />
-                                       </padding>
+                                    <VBox>
                                        <HBox.margin>
                                           <Insets />
                                        </HBox.margin>
-                                    </Label>
+                                       <children>
+                                          <Label contentDisplay="TOP" prefHeight="11.0" prefWidth="275.0" text=" Program Cost" translateY="2.0" />
+                                          <Label fx:id="lblProFee" prefHeight="30.0" prefWidth="275.0" style="-fx-background-color: #D4E7C5; -fx-border-color: #99BC85; -fx-border-width: 1;" text=" Program Fee">
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" top="5.0" />
+                                             </padding>
+                                          </Label>
+                                       </children>
+                                    </VBox>
                                  </children>
                               </HBox>
-                              <TextField fx:id="txtUpfront" prefHeight="30.0" prefWidth="275.0" promptText="Upfront Payment" style="-fx-background-color: #D4E7C5; -fx-border-color: #99BC85; -fx-border-width: 1;" />
+                              <VBox>
+                                 <children>
+                                    <Label contentDisplay="TOP" prefHeight="11.0" prefWidth="275.0" text=" Upfront Payment" translateY="2.0" />
+                                    <TextField fx:id="txtUpfront" prefHeight="30.0" prefWidth="275.0" promptText="Upfront Payment" style="-fx-background-color: #D4E7C5; -fx-border-color: #99BC85; -fx-border-width: 1;" />
+                                 </children>
+                              </VBox>
                               <HBox>
                                  <children>
                                     <VBox>
                                        <children>
-                                          <Label contentDisplay="TOP" prefHeight="11.0" prefWidth="77.0" text=" Registration Status" translateY="2.0" />
+                                          <Label contentDisplay="TOP" prefHeight="11.0" prefWidth="275.0" text=" Registration Status" translateY="2.0" />
                                           <Label fx:id="lblStatus" prefHeight="30.0" prefWidth="275.0" style="-fx-background-color: #D4E7C5; -fx-border-color: #99BC85; -fx-border-width: 1;" text=" Status">
                                              <padding>
                                                 <Insets bottom="5.0" left="5.0" top="5.0" />

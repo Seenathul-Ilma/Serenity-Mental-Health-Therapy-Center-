@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface TherapistDAO extends CrudDAO<Therapist, String> {
     List<Therapist> getAvailableTherapists(DayOfWeek selectedDay, String dayType);
+    //List<Therapist> getAvailableTherapists(DayOfWeek selectedDay);
 }

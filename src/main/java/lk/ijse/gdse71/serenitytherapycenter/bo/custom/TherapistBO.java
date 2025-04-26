@@ -36,4 +36,5 @@ public interface TherapistBO extends SuperBO {
     TherapistDTO findByTherapistId(String selectedTherapistId) throws SQLException, ClassNotFoundException;
 
     ArrayList<TherapistDTO> checkAvailableTherapistsByDay(DayOfWeek selectedDay, String dayType);
+    //ArrayList<TherapistDTO> checkAvailableTherapistsByDay(DayOfWeek selectedDay);
 }

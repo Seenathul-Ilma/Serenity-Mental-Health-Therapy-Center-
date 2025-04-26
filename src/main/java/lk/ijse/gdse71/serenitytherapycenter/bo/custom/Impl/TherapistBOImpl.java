@@ -125,9 +125,11 @@ public class TherapistBOImpl implements TherapistBO {
 
     @Override
     public ArrayList<TherapistDTO> checkAvailableTherapistsByDay(DayOfWeek selectedDay, String dayType) {
+    //public ArrayList<TherapistDTO> checkAvailableTherapistsByDay(DayOfWeek selectedDay) {
         ArrayList<TherapistDTO> therapistDTOS = new ArrayList<>();
 
         List<Therapist> therapists = therapistDAO.getAvailableTherapists(selectedDay, dayType);
+        //List<Therapist> therapists = therapistDAO.getAvailableTherapists(selectedDay);
 
         if (therapists == null || therapists.isEmpty()) {
             System.out.println("No available therapists found!");
