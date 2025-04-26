@@ -1,5 +1,7 @@
 package lk.ijse.gdse71.serenitytherapycenter.dao.custom.Impl;
 
+import lk.ijse.gdse71.serenitytherapycenter.bo.exeception.DuplicateException;
+import lk.ijse.gdse71.serenitytherapycenter.bo.exeception.NotFoundException;
 import lk.ijse.gdse71.serenitytherapycenter.config.FactoryConfiguration;
 import lk.ijse.gdse71.serenitytherapycenter.dao.custom.TherapySessionDAO;
 import lk.ijse.gdse71.serenitytherapycenter.entity.TherapySession;
@@ -62,7 +64,8 @@ public class TherapySessionDAOImpl implements TherapySessionDAO {
 
             TherapySession existSession = session.get(TherapySession.class, entity.getSessionId());
             if (existSession != null){
-                return false;
+                throw new DuplicateException("Therapy Session ID already exists!");
+                //return false;
             }
 
             session.persist(entity);
@@ -80,13 +83,14 @@ public class TherapySessionDAOImpl implements TherapySessionDAO {
     }
 
     @Override
-    public boolean delete(String selectedId) throws SQLException, ClassNotFoundException {
+    public boolean delete(String selectedId) {
         Session session = factoryConfiguration.getSession();
         Transaction transaction = session.beginTransaction();
         try {
             TherapySession sessionEntity = session.get(TherapySession.class, selectedId);
             if (sessionEntity == null){
-                return false;
+                //return false;
+                throw new NotFoundException("Therapy Session ID does not exist!");
             }
             session.remove(sessionEntity);
             transaction.commit();
@@ -106,7 +110,6 @@ public class TherapySessionDAOImpl implements TherapySessionDAO {
         Session session = factoryConfiguration.getSession();
         Transaction transaction = session.beginTransaction();
         try {
-
             session.merge(entity);
             transaction.commit();
             return true;
@@ -127,12 +130,13 @@ public class TherapySessionDAOImpl implements TherapySessionDAO {
     }
 
     @Override
-    public Optional<TherapySession> findById(String selectedId) throws SQLException, ClassNotFoundException {
+    public Optional<TherapySession> findById(String selectedId) {
         Session session = factoryConfiguration.getSession();
         TherapySession therapySessionEntity = session.get(TherapySession.class, selectedId);
         session.close();
         if (therapySessionEntity == null) {
-            return Optional.empty();
+            throw new NotFoundException("Therapy Session ID does not exist!");
+            //return Optional.empty();
         }
         return Optional.of(therapySessionEntity);
     }
@@ -142,7 +146,7 @@ public class TherapySessionDAOImpl implements TherapySessionDAO {
         Session session = factoryConfiguration.getSession();
 
         try {
-            String hql = "SELECT ts.therapist FROM TherapySession ts WHERE sessionDate = :selectedDate";
+            String hql = "SELECT ts.therapist.therapistId FROM TherapySession ts WHERE ts.sessionDate = :selectedDate AND ts.sessionStatus = 'Ongoing'";
             Query<String> therapistIdQuery = session.createQuery(hql, String.class);
 
             therapistIdQuery.setParameter("selectedDate", selectedDate);

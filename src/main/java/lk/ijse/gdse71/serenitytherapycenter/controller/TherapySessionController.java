@@ -194,9 +194,9 @@ public class TherapySessionController implements Initializable {
         observableList.addAll(regIds);
         cmbRegId.setItems(observableList);
 
-        if (!observableList.isEmpty()) {
+        /*if (!observableList.isEmpty()) {
             cmbRegId.getSelectionModel().selectFirst();
-        }
+        }*/
         System.out.println("ComboBox loaded with: " + cmbRegId.getItems());
     }
 
@@ -204,6 +204,7 @@ public class TherapySessionController implements Initializable {
     void cmbRegOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String selectedRegId = cmbRegId.getSelectionModel().getSelectedItem();
 
+        System.out.println("sel combo box: "+selectedRegId);
         try {
             if (selectedRegId != null) {
                 EnrollmentDTO enrollmentDTO = registrationBO.findByRegistrationId(selectedRegId);

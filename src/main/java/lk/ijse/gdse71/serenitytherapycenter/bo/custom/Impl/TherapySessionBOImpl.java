@@ -1,6 +1,8 @@
 package lk.ijse.gdse71.serenitytherapycenter.bo.custom.Impl;
 
 import lk.ijse.gdse71.serenitytherapycenter.bo.custom.TherapySessionBO;
+import lk.ijse.gdse71.serenitytherapycenter.bo.exeception.DuplicateException;
+import lk.ijse.gdse71.serenitytherapycenter.bo.exeception.NotFoundException;
 import lk.ijse.gdse71.serenitytherapycenter.config.FactoryConfiguration;
 import lk.ijse.gdse71.serenitytherapycenter.dao.DAOFactory;
 import lk.ijse.gdse71.serenitytherapycenter.dao.custom.PaymentDAO;
@@ -95,7 +97,12 @@ public class TherapySessionBOImpl implements TherapySessionBO {
         therapySession.setSessionDate(therapySessionDTO.getSessionDate());
         therapySession.setSessionStatus(therapySessionDTO.getSessionStatus());
 
-        return therapySessionDAO.save(therapySession);
+        try {
+            return therapySessionDAO.save(therapySession);
+        } catch (DuplicateException e) {
+            System.err.println("Cannot save session: " + e.getMessage());
+            return false;
+        }
     }
 
     @Override
@@ -119,25 +126,35 @@ public class TherapySessionBOImpl implements TherapySessionBO {
         therapySession.setSessionDate(therapySessionDTO.getSessionDate());
         therapySession.setSessionStatus(therapySessionDTO.getSessionStatus());
 
-        return therapySessionDAO.update(therapySession);
+        try {
+            return therapySessionDAO.update(therapySession);
+        } catch (NotFoundException e) {
+            System.err.println("Cannot update session: " + e.getMessage());
+            return false;
+        }
     }
 
     @Override
     public TherapySessionDTO findBySessionId(String selectedSessionId) throws SQLException, ClassNotFoundException {
-        Optional<TherapySession> therapySessionOptional = therapySessionDAO.findById(selectedSessionId);
+        try {
+            Optional<TherapySession> therapySessionOptional = therapySessionDAO.findById(selectedSessionId);
 
-        if(therapySessionOptional.isPresent()){
-            TherapySession therapySession = therapySessionOptional.get();
-            return new TherapySessionDTO(
-                    therapySession.getSessionId(),
-                    therapySession.getRegistrationId(),
-                    therapySession.getTherapyProgram().getProgramId(),
-                    therapySession.getTherapist().getTherapistId(),
-                    therapySession.getPatient().getPatientId(),
-                    therapySession.getSessionDate(),
-                    therapySession.getSessionStatus()
-            );
-        } else {
+            if(therapySessionOptional.isPresent()){
+                TherapySession therapySession = therapySessionOptional.get();
+                return new TherapySessionDTO(
+                        therapySession.getSessionId(),
+                        therapySession.getRegistrationId(),
+                        therapySession.getTherapyProgram().getProgramId(),
+                        therapySession.getTherapist().getTherapistId(),
+                        therapySession.getPatient().getPatientId(),
+                        therapySession.getSessionDate(),
+                        therapySession.getSessionStatus()
+                );
+            } else {
+                return null;
+            }
+        } catch (NotFoundException e) {
+            System.err.println("Session not found: " + e.getMessage());
             return null;
         }
     }
@@ -217,8 +234,9 @@ public class TherapySessionBOImpl implements TherapySessionBO {
             e.printStackTrace();
             return false;
         } finally {
-            // Close session to release resources
-            session.close();
+            if (session != null || session.isOpen()) {
+                session.close();
+            }
         }
 
     }
